@@ -1,25 +1,20 @@
-class Muffin: # class for muffin flavor, price, and cooking doneness 
+class Muffin: # muffin class --> flavor, price, cook level
+    def __init__(self, flavor, price): # initilizing muffin
+        self.flavor = flavor
+        self.price = price
+        self.cook_levels = ["underdone", "well done", "overdone"] # cooking levels
+        self.current_level = 0 # since they start underdone current level is index 0
     
-    def __init__(self,flavor, price, cook_levels):
-        
-        #initializing a muffin object
-        self.flavor = flavor 
-        self.price = price 
-
-        # Cooking levels of Muffin 
-        self.cook_levels = ["underdone", "well done", "overdone"]
-        current_level = 0 # we are starting at under done which is position 0 of the list! 
-
-    def bake_muffin(self): # updates the cooking level of the muffin each time called 
-        if self.current_level < len(self.cook_levels): # checking if muffin is not overdone or underdone
-            self.current_level += 1       
+    def bake_muffin(self):# baking da muffin
+        if self.current_level < len(self.cook_levels) - 1: # want to only go one uo if we are underdone, don't want to overdone
+            self.current_level += 1
     
-    def get_description(self): 
-        muffin_doneness = self.cook_levels[self.current_level]
-        return  self.current_level + self.flavor + "muffin " + ": $" + self.price # string with muffin cooking level, flavor and price
+    def get_description(self): # description of muffin
+        cooking_status = self.cook_levels[self.current_level]
+        return f"{cooking_status} {self.flavor} muffin priced at ${self.price:.2f}"
     
-    def __str__(self): # a string representation of the muffin object
-        return self.get_description()
+    def __str__(self): # string representation of muffin!
+        return self.flavor
     
 
 

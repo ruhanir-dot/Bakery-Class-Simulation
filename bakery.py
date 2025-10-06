@@ -1,93 +1,86 @@
+
 from muffin import Muffin
 from drink import Drink
 
-class Bakery:
+class Bakery: # this our bakery class representing a bakery that sells muffins and drinks 
     def __init__(self, display_case=None, muffin_menu=None, drink_menu=None, money=0.0, sales=None):
-        self.display_case = []
-        self.muffin_menu = {} # Dictionary for muffins
-        self.drink_menu = {} # Dictionary for drinks
-        self.money = 0.0
-        self.sales = []
+        # initializing our parameters
+        self.display_case = [] # empty list for items in display case
+        self.muffin_menu = {}  # empty dictionary for muffin menu  flavor, price
+        self.drink_menu = {}  # empty dictionary for drink menu  type, price
+        self.money = 0.0      # starting money       
+        self.sales = []       # list of today sales      
 
+    def stock_bakery(self, items): # this is our method to stock our bakery with muffins and drinks
+        for item in items: # items is our list of muffin/drink objects, and looping through each item
+            
+            self.display_case.append(item) # adding each item to display case
 
-def stock_bakery(self, items):
-    for item in items: # iterating through items to stock bakery
-        self.display_case.append(item)
+            if isinstance(item, Muffin): 
+                # if object is muffin, add to muffin menu
+                self.muffin_menu[item.flavor] = item.price
+            elif isinstance(item, Drink):
+                # if object is  drink, add to drink menu
+                self.drink_menu[item.type] = item.price
 
-        # Updating Menus
-        if isinstance(item,Muffin): # checking if item is a muffin 
-            self.muffin_menu[item] #if it is we are adding the flavor and price to muffin menu
-        elif isinstance(item,Drink): #checking if item is a drink
-            self.drink_menu[item.size] = item.price #adding size and price
+    def fill_order(self, order_item): # method for filling an order
+        for item in self.display_case: # looping thorugh each item of my display case
+            if str(item) == order_item: # converting item to string and seeing if its the same as order
+                print(f"Order filled: {order_item}. Price: ${item.price:.2f}")
+                self.money += item.price # add to money earned
+                self.sales.append(order_item) # add to sales list
+                self.display_case.remove(item) # remove from display case
+                return
+        print(f"Sorry, {order_item} is out of stock.") # if not in display cse
 
-def fill_order(self, order_item):
-    for item in self.display_case:
-    #Convert item to string and check if it matches the order
-        if str(item) == order_item:
-            # Found it! Process the sale
-            print(f"Order filled: {order_item}. Price: ${item.price:.2f}")
-                
-            # Add the price to total money
-            self.money += item.price
-                
-            # Record the sale
-            self.sales.append(order_item)
-                
-            # Remove the item from display case (it's been sold!)
-            self.display_case.remove(item)
-                
-            # Exit the method - order complete
-            return
-    print(f"Sorry, {order_item} is not available.")
-   
-def display_menu(self):
-    print("Muffin Menu:")
-    for flavor, price in self.muffin_menu.items():
-        print(f"{flavor}: ${price:.2f}")
-    print("\nDrink Menu:")
-    for size, price in self.drink_menu.items():
-        print(f"{size} drink: ${price:.2f}")
+    def display_menu(self):
+        print("Muffin Menu:") # display muffin menu
+        for flavor, price in self.muffin_menu.items(): # looping through muffin menu dictionary
+            print(f"{flavor}: ${price:.2f}")
+        
+        print("\nDrink Menu:")
+        for size, price in self.drink_menu.items():# looping through drink menu dictionary
+            print(f"{size}: ${price:.2f}")
+        
+        print()
 
-def daily_summary(self):
-    print(f"Total sales today: ${self.money:.2f}")
-    print("Items sold:")
-    for item in self.sales:
-        print(item)
+    def daily_summary(self): # method for summary of da
+        print(f"Total sales today: ${self.money:.2f}")
+        print("Items sold:")
+        for item in self.sales:
+            print(item)
 
 
 def run_bakery():
-    """
-    Main function to run the bakery simulation.
-    """
-    # Create a new bakery
+
+    # new instance of bakery
     bakery = Bakery()
-    
-    # Stock the bakery with some muffins and drinks
+
+    # stocking bakery!
     muffins = [
         Muffin("blueberry", 2.50),
         Muffin("chocolate", 3.00),
     ]
-    
+
     drinks = [
         Drink("medium", "coffee", 1.75),
         Drink("large", "tea", 2.00),
     ]
     
-    # Add all items to the bakery
+    # add items to bakery
     bakery.stock_bakery(muffins + drinks)
     
-    # Display the menu
+    # display menu
     bakery.display_menu()
-    
-    # Fill some example orders
+
+    # filling example order
     bakery.fill_order("blueberry")
     bakery.fill_order("coffee")
     
-    # Show the updated menu and daily summary
+    # displaying menu and daily summary
     bakery.display_menu()
     bakery.daily_summary()
 
-
-# This runs the simulation when you execute the file
+# run bakery program
 if __name__ == "__main__":
     run_bakery()
